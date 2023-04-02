@@ -103,7 +103,7 @@ fun GuessingNumbScreen(
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
             )
-            ;Text(
+            Text(
                 text = count,
                 color = MaterialTheme.colors.surface,
                 modifier = Modifier.align(Alignment.CenterHorizontally),

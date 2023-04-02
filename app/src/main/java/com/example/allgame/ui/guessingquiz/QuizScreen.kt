@@ -24,7 +24,7 @@ fun QuizScreen(
     quizViewModel: QuizViewModel,
     restartquiz: () -> Unit,
     quitquiz: () -> Unit,
-    navController: NavHostController
+    navController: NavController
 ) {
 
     val uiState by quizViewModel.uiState.collectAsState()

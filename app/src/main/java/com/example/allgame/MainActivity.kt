@@ -44,7 +44,11 @@ class MainActivity : ComponentActivity() {
                             GuessingNumbScreen(name = "Guessing Number", navController = navController)
                         }
                         composable("Guessing Quiz") {
-                            QuizScreen(name = "Guessing Quiz", quizViewModel = QuizViewModel(), navController = navController)
+                            QuizScreen(name = "Guessing Quiz",
+                                quizViewModel = QuizViewModel(),
+                                restartquiz = QuizViewModel::resetQuiz,
+                                quitquiz = { finish() },
+                                navController = navController)
                         }
                         composable("Guessing Cards") {
                             GuessingCardScreen(name = "Guessing Cards", cardviewModel = CardViewModel(), navController = navController)
