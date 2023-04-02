@@ -24,7 +24,7 @@ import com.example.allgame.R
 @Composable
 fun GuessingCardScreen(
     name: String,
-    viewModel: CardViewModel,
+    cardviewModel: CardViewModel,
     navController: NavController,
 
 ) {
@@ -38,7 +38,7 @@ fun GuessingCardScreen(
         },
 
         content = {
-            val cards: List<CardModel> by viewModel.getCards().observeAsState(listOf())
+            val cards: List<CardModel> by cardviewModel.getCards().observeAsState(listOf())
             CardsGrid(cards = cards)
         },
         bottomBar = {
@@ -54,7 +54,7 @@ fun GuessingCardScreen(
                     color = Color.White,
                     modifier = Modifier
                         .clickable {
-                            viewModel.loadCards()
+                            cardviewModel.loadCards()
                         }
                         .padding(1.dp)
                         .background(Color.Magenta.copy(0.7F), RoundedCornerShape(25))
@@ -68,7 +68,7 @@ fun GuessingCardScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun CardsGrid(cards: List<CardModel>,) {
+fun CardsGrid(cards: List<CardModel>,) {
     val cardCount = cards.count()
     val columns = 4
     val rows = (cardCount + columns - 1) / columns
@@ -91,7 +91,7 @@ private fun CardsGrid(cards: List<CardModel>,) {
 
 
 @Composable
-fun CardItem(numb: CardModel, color: Color, viewModel: CardViewModel) {
+fun CardItem(numb: CardModel, color: Color, cardviewModel: CardViewModel) {
     Box(
         modifier = Modifier
             .padding(all = 5.dp)
@@ -107,7 +107,7 @@ fun CardItem(numb: CardModel, color: Color, viewModel: CardViewModel) {
                 )
                 .clickable {
                     if (numb.isVisible) {
-                        viewModel.updateShowVisibleCard(numb.id)
+                        cardviewModel.updateShowVisibleCard(numb.id)
                     }
                 }
 
