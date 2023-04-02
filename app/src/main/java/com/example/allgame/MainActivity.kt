@@ -18,7 +18,11 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.allgame.ui.guessingcard.CardViewModel
+import com.example.allgame.ui.guessingcard.GuessingCardScreen
 import com.example.allgame.ui.guessingnumber.GuessingNumbScreen
+import com.example.allgame.ui.guessingquiz.QuizScreen
+import com.example.allgame.ui.guessingquiz.QuizViewModel
 import com.example.allgame.ui.theme.AllgameTheme
 
 class MainActivity : ComponentActivity() {
@@ -40,10 +44,10 @@ class MainActivity : ComponentActivity() {
                             GuessingNumbScreen(name = "Guessing Number", navController = navController)
                         }
                         composable("Guessing Quiz") {
-                            guessingquiz(name = "Guessing Quiz", quizViewModel = QuizViewModel(), navController = navController)
+                            QuizScreen(name = "Guessing Quiz", quizViewModel = QuizViewModel(), navController = navController)
                         }
                         composable("Guessing Cards") {
-                            guessingcard(name = "Guessing Cards", cardviewModel = CardViewModel(), navController = navController)
+                            GuessingCardScreen(name = "Guessing Cards", cardviewModel = CardViewModel(), navController = navController)
                         }
                     }
                 }
