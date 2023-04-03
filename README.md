@@ -10,7 +10,7 @@
 #### Woraphat Wannaphong 6310611055
 
 # ขั้นตอนการใช้งาน
-1. git clone https://github.com/6310610958/CN333as2.git
+1. git clone https://github.com/6310610958/CN333as3.git
 2. Android Studio เลือก file => new => import project => เลือกfileที่cloneไว้
 3. กด Run or Shift + F10
 
