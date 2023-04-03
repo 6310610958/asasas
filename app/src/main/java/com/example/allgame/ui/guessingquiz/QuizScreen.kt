@@ -1,8 +1,11 @@
 package com.example.allgame.ui.guessingquiz
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
@@ -10,11 +13,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.NavHostController
 import com.example.allgame.data.QuizQuestion
+import kotlin.reflect.KFunction1
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -22,7 +26,7 @@ import com.example.allgame.data.QuizQuestion
 fun QuizScreen(
     name: String,
     quizViewModel: QuizViewModel,
-    restartquiz: () -> Unit,
+    restartquiz: KFunction1<QuizViewModel, Unit>,
     quitquiz: () -> Unit,
     navController: NavController
 ) {
@@ -33,10 +37,12 @@ fun QuizScreen(
 
         topBar = { TopAppBar(title = { Text("CN333 ASIGNMENT2") }) },
         content = {
-            Box(modifier = Modifier.fillMaxSize().padding(16.dp)) {
+            Box(modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp)) {
 
                 if (uiState.quizNumber == 11) {
-                    FinalScreen(score = uiState.score, restartquiz = restartquiz, quitquiz = quitquiz)
+                    FinalScreen(score = uiState.score, restartquiz = restartquiz, quitquiz = quitquiz, navController = navController)
 
                 } else {
                     QuestionScreen(
@@ -45,8 +51,8 @@ fun QuizScreen(
                         score = uiState.score,
                         quizNum = uiState.quizNumber,
                         correctAnswer = uiState.options,
-                        SelectedAnswer = quizViewModel::answerQuestion
-
+                        SelectedAnswer = quizViewModel::answerQuestion,
+                        navController = navController
                     )
                 }
             }
@@ -61,11 +67,14 @@ fun QuestionScreen(
     question: QuizQuestion,
     options: List<String>,
     correctAnswer: List<String>,
+    navController: NavController,
     SelectedAnswer: (String) -> Unit
 ) {
 
     Column(
-        modifier = Modifier.padding(16.dp).verticalScroll(rememberScrollState()),
+        modifier = Modifier
+            .padding(16.dp)
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
 
@@ -83,7 +92,9 @@ fun QuestionScreen(
 
         options.forEach { choice ->
             Button(
-                modifier = Modifier.fillMaxWidth().padding(bottom = 5.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 5.dp),
                 onClick = { SelectedAnswer(choice) }
             ) {
                 Text(
@@ -95,15 +106,19 @@ fun QuestionScreen(
         Text(
             text = "Your score: $score out of 10",
             fontSize = 24.sp)
+
+
     }
 
 }
 
 
 @Composable
-fun FinalScreen(score: Int, restartquiz: () -> Unit, quitquiz: () -> Unit) {
+fun FinalScreen(score: Int, restartquiz: KFunction1<QuizViewModel, Unit>, quitquiz: () -> Unit, navController: NavController) {
     Column(
-        modifier = Modifier.fillMaxSize().padding(100.dp),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(100.dp),
         verticalArrangement = Arrangement.spacedBy(15.dp),
         horizontalAlignment = Alignment.CenterHorizontally
 
@@ -118,20 +133,43 @@ fun FinalScreen(score: Int, restartquiz: () -> Unit, quitquiz: () -> Unit) {
             fontSize = 26.sp
         )
 
-        Button(onClick = restartquiz,
-            modifier = Modifier.width(IntrinsicSize.Max)) {
-            Text(
-                text = "RESTART",
-                fontSize = 22.sp
-            )
-        }
+        Text(
+            text = "Restart",
+            fontSize = 25.sp,
+            color = Color.White,
+            modifier = Modifier
+                .clickable {
+                    restartquiz
+                }
+                .padding(1.dp)
+                .background(Color.Magenta.copy(0.7F), RoundedCornerShape(25))
+        )
 
-        Button(onClick = quitquiz,
-            modifier = Modifier.width(IntrinsicSize.Max)) {
-            Text(
-                text = "QUIT A QUIZ",
-                fontSize = 22.sp)
-        }
+        Text(
+            text = "Back",
+            fontSize = 25.sp,
+            color = Color.White,
+            modifier = Modifier
+                .clickable {
+                    navController.popBackStack()
+                }
+                .padding(1.dp)
+                .background(Color.Magenta.copy(0.7F), RoundedCornerShape(25))
+        )
     }
+}
+@Composable
+private fun ColumnScope.Button(restartquiz: KFunction1<QuizViewModel, Unit>, modifier: Modifier, content: RowScope.() -> Unit) {
+    Text(
+        text = "Restart",
+        fontSize = 25.sp,
+        color = Color.White,
+        modifier = Modifier
+            .clickable {
+                restartquiz
+            }
+            .padding(1.dp)
+            .background(Color.Magenta.copy(0.7F), RoundedCornerShape(25))
+    )
 }
 

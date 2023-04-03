@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Allgame</string>
+    <string name='count'>You try %s times.</string>
+    <string name='guess'>CHECK</string>
 </resources>

@@ -1,15 +1,18 @@
 package com.example.allgame.ui.guessingcard
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,14 +23,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.allgame.R
+import android.util.Log
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import com.example.allgame.ui.guessingnumber.randomNumber
 
+var viewModel: CardViewModel = CardViewModel();
+
+@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
 fun GuessingCardScreen(
     name: String,
-    cardviewModel: CardViewModel,
     navController: NavController,
 
 ) {
+    val viewModel by remember { mutableStateOf(viewModel) }
+    viewModel.loadCards();
     Scaffold(
         topBar = {
             TopAppBar(
@@ -38,10 +49,11 @@ fun GuessingCardScreen(
         },
 
         content = {
-            val cards: List<CardModel> by cardviewModel.getCards().observeAsState(listOf())
+            val cards: List<CardModel> by viewModel.getCards().observeAsState(listOf())
             CardsGrid(cards = cards)
         },
-        bottomBar = {
+        bottomBar =
+        {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -54,12 +66,22 @@ fun GuessingCardScreen(
                     color = Color.White,
                     modifier = Modifier
                         .clickable {
-                            cardviewModel.loadCards()
+                            viewModel.loadCards()
                         }
                         .padding(1.dp)
                         .background(Color.Magenta.copy(0.7F), RoundedCornerShape(25))
                 )
-
+                Text(
+                    text = "Back",
+                    fontSize = 25.sp,
+                    color = Color.White,
+                    modifier = Modifier
+                        .clickable {
+                            navController.popBackStack()
+                        }
+                        .padding(1.dp)
+                        .background(Color.Magenta.copy(0.7F), RoundedCornerShape(25))
+                )
             }
         }
     )
@@ -68,7 +90,7 @@ fun GuessingCardScreen(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CardsGrid(cards: List<CardModel>,) {
+private fun CardsGrid(cards: List<CardModel>) {
     val cardCount = cards.count()
     val columns = 4
     val rows = (cardCount + columns - 1) / columns
@@ -90,8 +112,9 @@ fun CardsGrid(cards: List<CardModel>,) {
 }
 
 
+
 @Composable
-fun CardItem(numb: CardModel, color: Color, cardviewModel: CardViewModel) {
+fun CardItem(numb: CardModel, color: Color) {
     Box(
         modifier = Modifier
             .padding(all = 5.dp)
@@ -107,8 +130,9 @@ fun CardItem(numb: CardModel, color: Color, cardviewModel: CardViewModel) {
                 )
                 .clickable {
                     if (numb.isVisible) {
-                        cardviewModel.updateShowVisibleCard(numb.id)
+                        viewModel.updateShowVisibleCard(numb.id)
                     }
+                    Log.i("INFO",""+numb.id.toString()+" , "+numb.isVisible.toString()+" , "+numb.char+numb.isSelect.toString())
                 }
 
         ) {

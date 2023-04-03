@@ -2,7 +2,10 @@ package com.example.allgame.ui.guessingnumber
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -72,7 +75,7 @@ fun GuessingNumbScreen(
             Text(
                 text = hint,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
-                color = MaterialTheme.colors.surface,
+                color = Color.Black,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold
             )
@@ -92,9 +95,11 @@ fun GuessingNumbScreen(
                 },
                 colors = ButtonDefaults.buttonColors(
                     backgroundColor = Color.White,
-                    contentColor = MaterialTheme.colors.onPrimary
+                    contentColor = Color.Black
                 )
-            )
+            ) {
+                Text(stringResource(R.string.guess))
+            }
         } else {
             Text(
                 text = "Your correct!",
@@ -104,7 +109,8 @@ fun GuessingNumbScreen(
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                text = count,
+                //text = "You try %s times.",
+                text = stringResource(R.string.count, count),
                 color = MaterialTheme.colors.surface,
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 fontSize = 20.sp,
@@ -127,6 +133,18 @@ fun GuessingNumbScreen(
                 text = "restart"
             )
         }
+
+        Text(
+            text = "Back",
+            fontSize = 25.sp,
+            color = Color.White,
+            modifier = Modifier
+                .clickable {
+                    navController.popBackStack()
+                }
+                .padding(1.dp)
+                .background(Color.Magenta.copy(0.7F), RoundedCornerShape(25))
+        )
     }
 
 

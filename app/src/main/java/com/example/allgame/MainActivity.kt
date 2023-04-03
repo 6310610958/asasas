@@ -10,8 +10,9 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -44,14 +45,15 @@ class MainActivity : ComponentActivity() {
                             GuessingNumbScreen(name = "Guessing Number", navController = navController)
                         }
                         composable("Guessing Quiz") {
-                            QuizScreen(name = "Guessing Quiz",
+                            QuizScreen(
+                                name = "Guessing Quiz",
                                 quizViewModel = QuizViewModel(),
                                 restartquiz = QuizViewModel::resetQuiz,
                                 quitquiz = { finish() },
                                 navController = navController)
                         }
                         composable("Guessing Cards") {
-                            GuessingCardScreen(name = "Guessing Cards", cardviewModel = CardViewModel(), navController = navController)
+                            GuessingCardScreen(name = "Guessing Cards", navController = navController)
                         }
                     }
                 }
@@ -66,12 +68,23 @@ enum class Screen {
 
 @Composable
 fun HomeScreen(navController: NavController, modifier: Modifier = Modifier) {
+
     Column(
         Modifier
             .fillMaxWidth()
             .padding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(
+            "Select Game",
+            fontSize = 30.sp,
+            textAlign = TextAlign.Center,
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(20.dp)
+
+        )
+
         Spacer(modifier = Modifier.height(50.dp))
         Button(
             onClick = { navController.navigate("Guessing Number") },
